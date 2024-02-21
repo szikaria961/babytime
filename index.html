@@ -12,6 +12,7 @@
       content="Schedule notice for current baby activities."
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="data.js"></script>
     <title>Babytime by Saba</title>
   </head>
   <body>
@@ -21,8 +22,8 @@
           class="rounded-full border w-[500px] h-[500px] flex items-center justify-center"
         >
           <div class="text-center">
-            <p class="text-4xl font-bold">Morning Exercise</p>
-            <p class="text-lg text-gray-500">09:00 AM</p>
+            <p id="activity" class="text-4xl font-bold">...</p>
+            <p id="interval" class="text-lg text-gray-500">...</p>
           </div>
         </div>
       </main>
@@ -33,7 +34,29 @@
       const loaded = "DOMContentLoaded";
       const $ = (selector) => d.querySelector(selector);
 
-      d.addEventListener(loaded, () => {});
+      const getCurrentTimeFormatted = () => {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes();
+        const amPM = hours >= 12 ? "PM" : "AM";
+
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+        const formattedTime = hours + ":" + formattedMinutes + " " + amPM;
+
+        return formattedTime;
+      };
+
+      d.addEventListener(loaded, () => {
+        const currentHour = new Date().getHours();
+        const activity = SCHEDULE[currentHour];
+
+        $("#activity").textContent = activity;
+        $("#interval").textContent = getCurrentTimeFormatted();
+      });
     </script>
   </body>
 </html>
